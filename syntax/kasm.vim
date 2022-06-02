@@ -1,12 +1,17 @@
 " syntax/kasm.vim
-syntax match kasmregister "R\d"
-syntax match kasmregister1 "R\d\d"
-syntax match kasmregister2 "L\d"
-syntax match kasmregister3 "L\d\d"
+syntax match kasmregisterR1 "[rR]\d"
+syntax match kasmregisterR2 "[rR]\d\d"
+syntax match kasmregisterL1 "[lL]\d"
+syntax match kasmregisterL2 "[lL]\d\d"
+
 syntax match kasmcomment ";.*"
-syntax match kasmimm     "#\d*"
-syntax match kasmimm2    "#scr"
-syntax keyword kasmcommands 
+
+syntax match kasmimm     "#[0-9a-zA-Z]*"
+syntax match controlimm " \d*"
+
+syntax match defines "$[a-zA-Z_]*"
+
+syntax keyword kasminstrs
 	\ move
 	\ add
 	\ addxz
@@ -14,30 +19,48 @@ syntax keyword kasmcommands
 	\ sub
 	\ subxz
 	\ subzz
-	\ nop
 	\ mult
+	\ multsa
+	\ multsb
+	\ multsab
+	\ nop
 	\ beginloop
 	\ endloop
 	\ beginloopscr
-	\ fbinv
 	\ jumpwor
-	\ cmp
+	\ jump
+	\ minc
+	\ maxc
+	\ sminc
+	\ smaxc
+	\ selectc
+	\ write
+	\ read
 	\ bspush
 	\ bsclearm
 	\ bspop
 	\ bsnot
-	\ minc
-	\ maxc
+	\ bsand
+	\ bscondright
+	\ bscondleft
 	\ begincond
 	\ endcond
-	\ write
-	\ read
-
-syntax keyword kasmcommands2
-	\ c1
-	\ b1
-	\ fbinv
 	\ ltc
+	\ equalc
+	\ sltc
+	\ cntpush
+	\ scrtocntlo
+	\ scrtocnthi
+
+syntax keyword kasmspecial
+	\ c1
+	\ c0
+	\ b1
+	\ b0
+	\ mp
+	\ fbinv
+	\ fbeqlatch
+	\ fbaco
 	\ cmp
 	\ cmpswap
 	\ scrtoimm
@@ -47,16 +70,18 @@ syntax keyword kasmcommands2
 	\ scrtoarr
 	\ qtoarr
 	\ arrtoq
-	\ mp
 	\ FORCE
-
-highlight default link kasmcomment Comment
-highlight default link kasmcommands Keyword
-highlight default link kasmcommands2 Include 
-highlight default link kasmregister Type
-highlight default link kasmregister1 Type
-highlight default link kasmregister2 Type
-highlight default link kasmregister3 Type
-highlight default link kasmimm Number
-highlight default link kasmimm2 Number
+	\ INCLUDE
+	\ DEFINE
+	\ start
+	
+highlight default link kasminstrs Statement
+highlight default link kasmspecial Special
+highlight default link defines Include 
+highlight default link kasmregisterR1 Identifier
+highlight default link kasmregisterR2 Identifier
+highlight default link kasmregisterL1 Identifier
+highlight default link kasmregisterL2 Identifier
+highlight default link kasmimm Constant
+highlight default link controlimm Constant
 highlight default link kasmcomment Comment
